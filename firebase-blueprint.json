@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Student or Admin user profile",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "studentId": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "department": { "type": "string", "maxLength": 100 },
+        "programme": { "type": "string", "maxLength": 100 },
+        "year": { "type": "string", "maxLength": 10 },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "profileImage": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "name", "studentId", "email", "role"]
+    },
+    "Document": {
+      "title": "Document",
+      "description": "Student uploaded academic document record",
+      "type": "object",
+      "properties": {
+        "documentId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "fileName": { "type": "string", "maxLength": 255 },
+        "documentName": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 50 },
+        "description": { "type": "string", "maxLength": 500 },
+        "fileType": { "type": "string", "maxLength": 20 },
+        "fileSize": { "type": "number" },
+        "storagePath": { "type": "string", "maxLength": 500 },
+        "downloadUrl": { "type": "string", "maxLength": 1000 },
+        "academicYear": { "type": "string", "maxLength": 20 },
+        "semester": { "type": "string", "maxLength": 20 },
+        "uploadedAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["documentId", "userId", "fileName", "documentName", "category", "fileSize"]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Audit and history log entry for student activity",
+      "type": "object",
+      "properties": {
+        "activityId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "action": { "type": "string", "maxLength": 50 },
+        "documentId": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string" },
+        "metadata": { "type": "object" }
+      },
+      "required": ["activityId", "userId", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores student and admin profile records"
+    },
+    "/documents/{documentId}": {
+      "schema": { "$ref": "#/entities/Document" },
+      "description": "Stores metadata of all uploaded student documents"
+    },
+    "/activities/{activityId}": {
+      "schema": { "$ref": "#/entities/Activity" },
+      "description": "Stores user actions and audit trails"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "StudentVault – Cloud-Based Student Document Management System",
+  "description": "Store, organize, verify and retrieve academic documents securely from anywhere with cloud storage, Firebase integration, and role-based access control.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

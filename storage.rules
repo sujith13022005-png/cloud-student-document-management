@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Student documents path
+    // Structure: students/{userId}/documents/{documentId}/{fileName}
+    match /students/{userId}/documents/{documentId}/{fileName} {
+      // Document owner can read, download, delete
+      allow read, delete: if request.auth != null && request.auth.uid == userId;
+
+      // Allow write if authenticated, user matches path, file size <= 25MB
+      // and MIME type matches allowed academic formats
+      allow write: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 25 * 1024 * 1024
+        && (
+          request.resource.contentType.matches('application/pdf') ||
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('application/msword') ||
+          request.resource.contentType.matches('application/vnd.openxmlformats-officedocument.*') ||
+          request.resource.contentType.matches('application/vnd.ms-excel') ||
+          request.resource.contentType.matches('text/plain')
+        );
+    }
+  }
+}
